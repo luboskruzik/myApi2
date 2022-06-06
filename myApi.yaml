@@ -1,0 +1,120 @@
+# OpenAPI Object
+openapi: "3.0.2"
+info: # Info Object
+  title: myApi
+  version: "1.0"
+servers: # array of Server Objects
+  - url: http://localhost/v1
+paths: # Paths Object
+  /user: # Path Item Object
+    post: # Operation Object
+      summary: 'Creates a new user'
+      description: 'Request is sent after the email is verified'
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses: # Responses Object
+        '201':
+          $ref: '#/components/responses/UserCreated'
+    parameters:
+      - $ref: '#/components/parameters/myClientId'
+    get:
+      summary: 'Gets a user by email'
+      description: 'Request is sent during login'
+      responses:
+        '200':
+          $ref: '#/components/responses/User'
+      parameters:
+        - $ref: '#/components/parameters/userEmail'
+
+components: # Components Object
+  schemas:
+    User: # Schema Object
+      type: object
+      required:
+        - title
+        - first_name
+        - last_name
+        - password
+      properties:
+        email:
+          type: string
+          example: 'john@doe.com'
+        title:
+          type: string
+          example: 'mr'
+        first_name:
+          type: string
+          example: 'John'
+        last_name:
+          type: string
+          example: 'Doe'
+        phone:
+          type: string
+          example: '777 666 555'
+        prefix:
+          type: string
+          example: '+420'
+        country:
+          type: string
+          example: 'CZ'
+        newsletter:
+          type: boolean
+          example: false
+        created_at:
+          type: string
+          example: '1272508903' # Unix timestamp
+        password:
+          type: string
+          example: '$2y$13$BgD7lCh9m/dB3Rk/A8SgfuPNt8hwI.3t09.X6LjPZ4lS3VkIeRRge'
+  responses:
+    User: # Response Object
+      description: 'A User entity'
+      content: # Media Type Object
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/User'
+    UserCreated:
+      description: 'Response contents an empty json'
+      content:
+        application/json:
+          schema:
+            type: object
+  parameters:
+    myClientId: # Parameter Object
+      name: my-client-id
+      in: header
+      required: true
+      schema:
+        type: string
+      example: 'myClient'
+    userId: # Parameter Object
+      name: id
+      in: path
+      schema:
+        type: integer
+      required: true
+    userEmail: # Parameter Object
+      name: email
+      in: query
+      schema:
+        type: string
+      example: 'john@doe.com'
+  requestBodies:
+    User: # Request Body Object
+      description: 'A User entity'
+      required: true
+      content:
+        application/json: # Media Type Object
+          schema:
+            $ref: '#/components/schemas/User'
+  securitySchemes:
+    myClientKey:
+      type: apiKey
+      name: my-client-key
+      in: header
+
+security:
+  - myClientKey: []

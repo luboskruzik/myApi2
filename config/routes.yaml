@@ -1,3 +1,20 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+saveUser:
+    path: /v1/user
+    controller: App\Controller\ApiController::saveUser
+    methods:
+        - POST
+getUserByEmail:
+    path: /v1/user
+    controller: App\Controller\ApiController::getUserByEmail
+    methods:
+        - GET
+getUserById:
+    path: /v1/user/{id}
+    controller: App\Controller\ApiController::getUserById
+    methods:
+        - GET
+login:
+    path: /v1/login
+    controller: App\Controller\ApiController::login
+    methods:
+        - POST
